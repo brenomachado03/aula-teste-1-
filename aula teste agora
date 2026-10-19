@@ -88,6 +88,11 @@
       background: #1d4ed8;
     }
 
+    button.btn-submit:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
     /* Mensagens de feedback */
     .message {
       margin-top: 1.25rem;
@@ -141,9 +146,9 @@
         />
       </div>
 
-      <button type="submit" class="btn-submit">Entrar</button>
+      <button type="submit" id="btnConfirmar" class="btn-submit">Confirmar</button>
 
-      <!-- Área de exibição de status -->
+      <!-- Área de status -->
       <div id="feedbackMessage" class="message"></div>
     </form>
   </main>
@@ -153,20 +158,25 @@
     const userInput = document.getElementById('username');
     const passInput = document.getElementById('password');
     const feedback = document.getElementById('feedbackMessage');
+    const btnConfirmar = document.getElementById('btnConfirmar');
 
     form.addEventListener('submit', function (event) {
-      event.preventDefault(); // Evita recarregar a página
+      event.preventDefault(); // Impede o envio padrão
 
       const user = userInput.value.trim();
       const pass = passInput.value.trim();
 
-      // Regra: usuário e senha devem ser "123456"
+      // Validação: Usuário e Senha devem ser 123456
       if (user === '123456' && pass === '123456') {
         feedback.className = 'message success';
-        feedback.textContent = '✅ Acesso liberado! Login realizado com sucesso.';
-        
-        // Limpa a senha após o sucesso
-        passInput.value = '';
+        feedback.textContent = '✅ Acesso liberado! Redirecionando para o YouTube...';
+        btnConfirmar.disabled = true; // Desativa o botão temporariamente
+
+        // Aguarda 1,5 segundo para o usuário ler a mensagem e redireciona
+        setTimeout(() => {
+          window.location.href = 'https://www.youtube.com';
+        }, 1500);
+
       } else {
         feedback.className = 'message error';
         feedback.textContent = '❌ Usuário ou senha incorretos. Tente novamente.';
